@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog — OXICORE Technology</title>
+  <meta name="description" content="Artigos sobre DevOps, GitOps, Infrastructure as Code, CI/CD e cloud.">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Principal">
+    <a href="../index.html" class="nav-logo"><img src="../assets/img/logo-oxicore-white.png" alt="OXICORE Technology"></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false"><span></span></button>
+    <ul class="nav-links">
+      <li><a href="../index.html#quem-somos">Quem somos</a></li>
+      <li><a href="../index.html#servicos">Serviços</a></li>
+      <li><a href="index.html" class="active">Blog</a></li>
+      <li><a href="../index.html#contacto" class="btn btn-primary">Pedir orçamento</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero">
+    <img class="hero-symbol" src="../assets/img/symbol-oxicore-white.png" alt="" aria-hidden="true">
+    <div class="container">
+      <span class="eyebrow">Blog</span>
+      <h1>Notas de engenharia</h1>
+      <p>Guias práticos, boas práticas e aprendizagens do dia a dia com DevOps, GitOps, IaC, cloud e automação.</p>
+    </div>
+  </section>
+  <div class="pill-band" aria-hidden="true"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="filters" role="group" aria-label="Filtrar por categoria">
+        <button class="filter active" data-filter="all">Todos</button>
+        <button class="filter" data-filter="gitops">GitOps</button>
+        <button class="filter" data-filter="iac">IaC</button>
+        <button class="filter" data-filter="cicd">CI/CD</button>
+      </div>
+
+      <!-- Para publicar um novo artigo: copie um ficheiro em blog/posts/ e adicione um cartão aqui (e na home, se quiser destacá-lo). -->
+      <div class="posts-grid">
+        <a class="post-card" data-cat="gitops" href="posts/gitops-argo-cd.html">
+          <div class="post-cover cover-dark"><img src="../assets/img/symbol-oxicore-white.png" alt=""></div>
+          <div class="post-body">
+            <div class="post-meta"><span class="cat">GitOps</span>2 out 2026 · 6 min</div>
+            <h3>GitOps com Argo CD: por onde começar</h3>
+            <p>Os princípios do GitOps e um primeiro deploy declarativo em Kubernetes, passo a passo.</p>
+            <span class="read-more">Ler artigo</span>
+          </div>
+        </a>
+        <a class="post-card" data-cat="iac" href="posts/terraform-boas-praticas.html">
+          <div class="post-cover cover-sage"><img src="../assets/img/symbol-oxicore.png" alt=""></div>
+          <div class="post-body">
+            <div class="post-meta"><span class="cat">IaC</span>18 set 2026 · 7 min</div>
+            <h3>7 boas práticas de Terraform para equipas</h3>
+            <p>Estado remoto, módulos, ambientes e validação automática: o essencial para escalar IaC.</p>
+            <span class="read-more">Ler artigo</span>
+          </div>
+        </a>
+        <a class="post-card" data-cat="cicd" href="posts/pipeline-ci-cd-seguro.html">
+          <div class="post-cover cover-teal"><img src="../assets/img/symbol-oxicore-white.png" alt=""></div>
+          <div class="post-body">
+            <div class="post-meta"><span class="cat">CI/CD</span>4 set 2026 · 5 min</div>
+            <h3>Anatomia de um pipeline CI/CD seguro</h3>
+            <p>As etapas que não podem faltar para entregar software com rapidez e confiança.</p>
+            <span class="read-more">Ler artigo</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <img src="../assets/img/logo-oxicore-white.png" alt="OXICORE Technology">
+    <nav aria-label="Rodapé">
+      <a href="../index.html#quem-somos">Quem somos</a>
+      <a href="../index.html#servicos">Serviços</a>
+      <a href="index.html">Blog</a>
+      <a href="../index.html#contacto">Contacto</a>
+    </nav>
+    <span>© <span data-year></span> OXICORE Technology</span>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>7 boas práticas de Terraform para equipas — OXICORE Technology</title>
+  <meta name="description" content="Estado remoto, módulos, ambientes e validação automática: o essencial para escalar Infrastructure as Code.">
+  <link rel="icon" type="image/png" href="../../assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Principal">
+    <a href="../../index.html" class="nav-logo"><img src="../../assets/img/logo-oxicore-white.png" alt="OXICORE Technology"></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false"><span></span></button>
+    <ul class="nav-links">
+      <li><a href="../../index.html#quem-somos">Quem somos</a></li>
+      <li><a href="../../index.html#servicos">Serviços</a></li>
+      <li><a href="../index.html" class="active">Blog</a></li>
+      <li><a href="../../index.html#contacto" class="btn btn-primary">Pedir orçamento</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="article-hero">
+    <div class="container">
+      <a class="back" href="../index.html">← Voltar ao blog</a>
+      <div class="post-meta"><span class="cat">IaC</span>18 set 2026 · 7 min de leitura</div>
+      <h1>7 boas práticas de Terraform para equipas</h1>
+    </div>
+  </section>
+  <div class="pill-band" aria-hidden="true"></div>
+
+  <article class="article">
+    <p>Terraform é simples de começar e fácil de complicar. Quando várias pessoas passam a mexer na mesma infraestrutura, algumas regras fazem toda a diferença.</p>
+
+    <h2>1. Estado remoto com locking</h2>
+    <p>Nunca guarde o <code>terraform.tfstate</code> localmente ou no Git. Use um backend remoto com bloqueio para evitar alterações concorrentes.</p>
+    <pre><code>terraform {
+  backend "s3" {
+    bucket       = "empresa-tfstate"
+    key          = "prod/network/terraform.tfstate"
+    region       = "eu-west-1"
+    use_lockfile = true
+    encrypt      = true
+  }
+}</code></pre>
+
+    <h2>2. Fixe as versões</h2>
+    <p>Defina <code>required_version</code> e restrinja as versões dos providers. Faça commit do <code>.terraform.lock.hcl</code>.</p>
+
+    <h2>3. Módulos pequenos e reutilizáveis</h2>
+    <p>Um módulo deve fazer uma coisa bem feita (rede, cluster, base de dados) e expor apenas as variáveis necessárias.</p>
+
+    <h2>4. Um estado por ambiente e por domínio</h2>
+    <p>Separar <code>dev</code>, <code>staging</code> e <code>prod</code>, e também rede, dados e aplicações, reduz o raio de impacto de cada <code>apply</code>.</p>
+
+    <h2>5. Validação automática no pipeline</h2>
+    <ul>
+      <li><code>terraform fmt -check</code> e <code>terraform validate</code></li>
+      <li><code>tflint</code> para erros e convenções</li>
+      <li><code>checkov</code> ou <code>trivy config</code> para segurança</li>
+    </ul>
+
+    <h2>6. Plan no pull request, apply após aprovação</h2>
+    <p>O resultado do <code>terraform plan</code> deve ser publicado no PR para revisão. O <code>apply</code> corre apenas a partir do ramo principal.</p>
+
+    <h2>7. Sem segredos no código</h2>
+    <p>Use um gestor de segredos (AWS Secrets Manager, Azure Key Vault, Vault) e marque as variáveis sensíveis com <code>sensitive = true</code>.</p>
+
+    <div class="callout"><p>Estas práticas funcionam igualmente com <strong>OpenTofu</strong>, o fork open source do Terraform.</p></div>
+
+    <div class="article-cta">
+      <div>
+        <h3>Precisa de ajuda com isto?</h3>
+        <p>Fale connosco para um orçamento ou uma análise da sua infraestrutura.</p>
+      </div>
+      <a href="../../index.html#contacto" class="btn btn-primary">Falar com a OXICORE</a>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <img src="../../assets/img/logo-oxicore-white.png" alt="OXICORE Technology">
+    <nav aria-label="Rodapé">
+      <a href="../../index.html#quem-somos">Quem somos</a>
+      <a href="../../index.html#servicos">Serviços</a>
+      <a href="../index.html">Blog</a>
+      <a href="../../index.html#contacto">Contacto</a>
+    </nav>
+    <span>© <span data-year></span> OXICORE Technology</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

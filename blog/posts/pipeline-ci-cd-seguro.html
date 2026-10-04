@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anatomia de um pipeline CI/CD seguro — OXICORE Technology</title>
+  <meta name="description" content="As etapas que não podem faltar num pipeline CI/CD para entregar software com rapidez e confiança.">
+  <link rel="icon" type="image/png" href="../../assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Principal">
+    <a href="../../index.html" class="nav-logo"><img src="../../assets/img/logo-oxicore-white.png" alt="OXICORE Technology"></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false"><span></span></button>
+    <ul class="nav-links">
+      <li><a href="../../index.html#quem-somos">Quem somos</a></li>
+      <li><a href="../../index.html#servicos">Serviços</a></li>
+      <li><a href="../index.html" class="active">Blog</a></li>
+      <li><a href="../../index.html#contacto" class="btn btn-primary">Pedir orçamento</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="article-hero">
+    <div class="container">
+      <a class="back" href="../index.html">← Voltar ao blog</a>
+      <div class="post-meta"><span class="cat">CI/CD</span>4 set 2026 · 5 min de leitura</div>
+      <h1>Anatomia de um pipeline CI/CD seguro</h1>
+    </div>
+  </section>
+  <div class="pill-band" aria-hidden="true"></div>
+
+  <article class="article">
+    <p>Um bom pipeline dá feedback rápido a quem desenvolve e impede que problemas cheguem a produção. Estas são as etapas que recomendamos como base.</p>
+
+    <h2>1. Build e testes</h2>
+    <p>Compilação, testes unitários e de integração. Se falhar aqui, o resto nem começa. Use cache de dependências para manter o pipeline abaixo dos 10 minutos.</p>
+
+    <h2>2. Análise estática e de segurança</h2>
+    <ul>
+      <li><strong>SAST:</strong> análise do código-fonte (Semgrep, CodeQL).</li>
+      <li><strong>SCA:</strong> vulnerabilidades em dependências (Dependabot, Trivy).</li>
+      <li><strong>Deteção de segredos:</strong> gitleaks ou trufflehog.</li>
+    </ul>
+
+    <h2>3. Imagem de container assinada</h2>
+    <p>Construa a imagem uma única vez, analise-a e assine-a. O mesmo artefacto é promovido entre ambientes.</p>
+    <pre><code>- name: Build &amp; push
+  run: docker buildx build --push -t $IMAGE:$GITHUB_SHA .
+- name: Scan
+  run: trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE:$GITHUB_SHA
+- name: Sign
+  run: cosign sign --yes $IMAGE@$DIGEST</code></pre>
+
+    <h2>4. Deploy via GitOps</h2>
+    <p>Em vez de o pipeline aceder diretamente ao cluster, atualiza a tag da imagem no repositório de manifestos. O Argo CD ou o Flux tratam do resto, sem credenciais de produção no CI.</p>
+
+    <h2>5. Verificação pós-deploy</h2>
+    <p>Smoke tests, métricas e alertas. Com <em>canary</em> ou <em>blue-green</em>, o rollback pode ser automático.</p>
+
+    <div class="callout"><p><strong>Princípio de base:</strong> privilégio mínimo. Use OIDC para autenticar o pipeline na cloud em vez de chaves de longa duração.</p></div>
+
+    <div class="article-cta">
+      <div>
+        <h3>Precisa de ajuda com isto?</h3>
+        <p>Fale connosco para um orçamento ou uma análise da sua infraestrutura.</p>
+      </div>
+      <a href="../../index.html#contacto" class="btn btn-primary">Falar com a OXICORE</a>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <img src="../../assets/img/logo-oxicore-white.png" alt="OXICORE Technology">
+    <nav aria-label="Rodapé">
+      <a href="../../index.html#quem-somos">Quem somos</a>
+      <a href="../../index.html#servicos">Serviços</a>
+      <a href="../index.html">Blog</a>
+      <a href="../../index.html#contacto">Contacto</a>
+    </nav>
+    <span>© <span data-year></span> OXICORE Technology</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitOps com Argo CD: por onde começar — OXICORE Technology</title>
+  <meta name="description" content="Os princípios do GitOps e um primeiro deploy declarativo em Kubernetes com Argo CD.">
+  <link rel="icon" type="image/png" href="../../assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Principal">
+    <a href="../../index.html" class="nav-logo"><img src="../../assets/img/logo-oxicore-white.png" alt="OXICORE Technology"></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false"><span></span></button>
+    <ul class="nav-links">
+      <li><a href="../../index.html#quem-somos">Quem somos</a></li>
+      <li><a href="../../index.html#servicos">Serviços</a></li>
+      <li><a href="../index.html" class="active">Blog</a></li>
+      <li><a href="../../index.html#contacto" class="btn btn-primary">Pedir orçamento</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="article-hero">
+    <div class="container">
+      <a class="back" href="../index.html">← Voltar ao blog</a>
+      <div class="post-meta"><span class="cat">GitOps</span>2 out 2026 · 6 min de leitura</div>
+      <h1>GitOps com Argo CD: por onde começar</h1>
+    </div>
+  </section>
+  <div class="pill-band" aria-hidden="true"></div>
+
+  <article class="article">
+    <p>GitOps é um modelo operacional em que o <strong>Git é a fonte única de verdade</strong> para a infraestrutura e para as aplicações. Em vez de alguém correr <code>kubectl apply</code> à mão, um agente dentro do cluster compara continuamente o estado desejado (no repositório) com o estado real e corrige qualquer diferença.</p>
+
+    <h2>Os quatro princípios</h2>
+    <ol>
+      <li><strong>Declarativo:</strong> o sistema é descrito pelo estado desejado, não por passos.</li>
+      <li><strong>Versionado e imutável:</strong> todo o estado vive no Git, com histórico completo.</li>
+      <li><strong>Obtido automaticamente:</strong> agentes aprovados puxam o estado do repositório.</li>
+      <li><strong>Reconciliado continuamente:</strong> desvios são detetados e corrigidos.</li>
+    </ol>
+
+    <h2>Instalar o Argo CD</h2>
+    <pre><code>kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml</code></pre>
+
+    <h2>A primeira Application</h2>
+    <p>Uma <code>Application</code> liga um caminho de um repositório Git a um namespace do cluster:</p>
+    <pre><code>apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minha-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/empresa/k8s-manifests.git
+    targetRevision: main
+    path: apps/minha-app/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: minha-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true</code></pre>
+
+    <div class="callout"><p><strong>Dica:</strong> com <code>selfHeal: true</code>, alterações manuais no cluster são revertidas automaticamente. Ative-o só quando a equipa já trabalhar exclusivamente via pull request.</p></div>
+
+    <h2>Próximos passos</h2>
+    <ul>
+      <li>Separar repositórios de código e de manifestos.</li>
+      <li>Usar o padrão <em>App of Apps</em> ou <em>ApplicationSets</em> para gerir vários ambientes.</li>
+      <li>Integrar a gestão de segredos (Sealed Secrets, External Secrets ou SOPS).</li>
+    </ul>
+
+    <div class="article-cta">
+      <div>
+        <h3>Precisa de ajuda com isto?</h3>
+        <p>Fale connosco para um orçamento ou uma análise da sua infraestrutura.</p>
+      </div>
+      <a href="../../index.html#contacto" class="btn btn-primary">Falar com a OXICORE</a>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <img src="../../assets/img/logo-oxicore-white.png" alt="OXICORE Technology">
+    <nav aria-label="Rodapé">
+      <a href="../../index.html#quem-somos">Quem somos</a>
+      <a href="../../index.html#servicos">Serviços</a>
+      <a href="../index.html">Blog</a>
+      <a href="../../index.html#contacto">Contacto</a>
+    </nav>
+    <span>© <span data-year></span> OXICORE Technology</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>
